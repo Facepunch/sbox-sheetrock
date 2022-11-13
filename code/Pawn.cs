@@ -1,8 +1,4 @@
 ﻿
-using System;
-
-namespace Sandbox;
-
 partial class Pawn : Player
 {
 	/// <summary>
