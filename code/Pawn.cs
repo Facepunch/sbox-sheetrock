@@ -70,4 +70,28 @@ partial class Pawn : Player
 		setup.FieldOfView += fov;
 
 	}
+
+    public override float FootstepVolume()
+    {
+		return Velocity.Length.LerpInverse(0f, 150.0f);
+    }
+
+    private TimeSince timeSinceLastFootstep;
+    public override void OnAnimEventFootstep(Vector3 pos, int foot, float volume)
+    {
+        if (!IsClient) return;
+        if (timeSinceLastFootstep < 0.2f) return;
+
+        timeSinceLastFootstep = 0;
+
+        var tr = Trace.Ray(pos, pos + Vector3.Down * 20)
+            .Radius(1)
+            .Ignore(this)
+            .Run();
+
+        if (!tr.Hit) return;
+
+        tr.Surface.DoFootstep(this, tr, foot, volume * FootstepVolume() * 10.0f);
+    }
+
 }
