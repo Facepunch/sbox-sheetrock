@@ -9,6 +9,14 @@
 public partial class MyGame : Sandbox.Game
 {
 
+	public MyGame()
+	{
+		if( IsClient )
+		{
+			_ = new Hud();
+		}
+	}
+
 	public override void FrameSimulate( Client cl )
 	{
 		base.FrameSimulate( cl );

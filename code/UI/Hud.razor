@@ -1,0 +1,19 @@
+﻿
+@inherits RootPanel;
+
+<style>
+    Hud {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+</style>
+
+@code {
+    public Hud()
+    {
+        Local.Hud = this;
+    }
+}

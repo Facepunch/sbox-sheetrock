@@ -17,9 +17,22 @@ partial class Pawn : Player
 		(Controller as WalkController).DefaultSpeed = 80;
 		
 		EnableHideInFirstPerson = true;
+
+		Inventory = new BaseInventory( this );
+		Inventory.Add( new TapeMeasure(), true );
 	}
 
-	public override void PostCameraSetup( ref CameraSetup setup )
+    public override void Simulate(Client cl)
+    {
+        base.Simulate(cl);
+
+		if ( ActiveChild.IsValid() )
+		{
+            SimulateActiveChild( cl, ActiveChild );
+        }
+    }
+
+    public override void PostCameraSetup( ref CameraSetup setup )
 	{
 		setup.ZNear = 0.1f;
 
