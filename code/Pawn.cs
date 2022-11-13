@@ -30,7 +30,23 @@ partial class Pawn : Player
 		{
             SimulateActiveChild( cl, ActiveChild );
         }
-    }
+
+		var tr = TraceEyes();
+
+		if( Input.Pressed( InputButton.Use ) && tr.Entity is IUsable use )
+		{
+			use.OnUse( this );
+		}
+
+		foreach ( var ent in Entity.All )
+		{
+			if ( ent is not IUsable u ) continue;
+
+			var glow = ent.Components.GetOrCreate<Glow>();
+			glow.Enabled = ent == tr.Entity;
+			glow.Color = u.GlowColor;
+		}
+	}
 
     public override void PostCameraSetup( ref CameraSetup setup )
 	{
@@ -42,6 +58,14 @@ partial class Pawn : Player
 		{
 			AddCameraEffects( ref setup );
 		}
+	}
+
+	public TraceResult TraceEyes( float distance = 1000.0f )
+	{
+		return Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * distance )
+			.WorldAndEntities()
+			.Ignore( this )
+			.Run();
 	}
 
 	float walkBob = 0;

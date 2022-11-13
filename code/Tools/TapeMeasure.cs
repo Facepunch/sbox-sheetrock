@@ -25,6 +25,8 @@ internal partial class TapeMeasure : BaseTool
 	{
 		base.Simulate( cl );
 
+		if ( !Pawn.IsValid() ) return;
+
 		if ( Measuring )
 		{
 			UpdateTape();
@@ -50,7 +52,7 @@ internal partial class TapeMeasure : BaseTool
 
 	private void StartTape()
 	{
-		var tr = TraceEyes();
+		var tr = Pawn.TraceEyes();
 		if ( !tr.Hit )
 		{
 			return;
@@ -62,7 +64,7 @@ internal partial class TapeMeasure : BaseTool
 
 	private void UpdateTape()
 	{
-		var tr = TraceEyes();
+		var tr = Pawn.TraceEyes();
 		if ( !tr.Hit )
 		{
 			return;
